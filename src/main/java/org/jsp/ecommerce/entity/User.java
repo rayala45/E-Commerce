@@ -2,6 +2,7 @@ package org.jsp.ecommerce.entity;
 
 import org.jsp.ecommerce.util.Role;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -23,9 +24,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
+	@Column(unique = true,nullable = false)
 	private String email;
+	@Column(unique = true,nullable = false,length=10)
 	private long phone;
+	@Column(nullable = false)
 	private String password;
+	
+	private int otp;
 
 	@Enumerated(EnumType.STRING)
 	private Role role;
