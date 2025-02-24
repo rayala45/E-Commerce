@@ -3,8 +3,10 @@ package org.jsp.ecommerce.serviceimpl;
 import java.util.List;
 import java.util.Optional;
 
+import org.jsp.ecommerce.dao.CartDao;
 import org.jsp.ecommerce.dao.UserDao;
 import org.jsp.ecommerce.dto.UserLogin;
+import org.jsp.ecommerce.entity.Cart;
 import org.jsp.ecommerce.entity.User;
 import org.jsp.ecommerce.responsestructure.ResponseStructure;
 import org.jsp.ecommerce.service.UserService;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserDao dao;
+	
+	@Autowired
+	private CartDao cdao;
 
 	@Autowired
 	private Helper helper;
@@ -29,6 +34,8 @@ public class UserServiceImpl implements UserService {
 			throw new RuntimeException("Email already Exist...");
 		}
 		user = dao.saveUser(user);
+		Cart c=Cart.builder().user(user).build();
+		cdao.saveCart(c);
 		int otp=helper.OTPGenerator();
 		helper.sendMail(user.getEmail(), "Account created successfully." + "\n Otp: " + otp,
 				"Profile");
